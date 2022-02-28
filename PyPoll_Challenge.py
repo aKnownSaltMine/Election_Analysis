@@ -6,7 +6,7 @@ import csv
 import os
 
 # Add a variable to load a file from a path.
-file_to_load = os.path.join("..", "Resources", "election_results.csv")
+file_to_load = os.path.join("Resources", "election_results.csv")
 # Add a variable to save the file to a path.
 file_to_save = os.path.join("analysis", "election_analysis.txt")
 
@@ -96,24 +96,42 @@ with open(file_to_save, "w") as txt_file:
     txt_file.write(election_results)
 
     # 6a: Write a for loop to get the county from the county dictionary.
+    for county in counties:
 
         # 6b: Retrieve the county vote count.
+        votes = county_votes.get(county)
 
         # 6c: Calculate the percentage of votes for the county.
-
-
+        vote_percentage = float(votes) / float(total_votes) * 100
+        county_results = (
+            f"{county}: {vote_percentage:.1f}% ({votes:,})\n"
+        )
          # 6d: Print the county results to the terminal.
+        print(county_results)
+
 
          # 6e: Save the county votes to a text file.
+        txt_file.write(county_results)
 
          # 6f: Write an if statement to determine the winning county and get its vote count.
+        if (votes > largest_county_count) and (vote_percentage > largest_county_percentage):
+            largest_county_count = votes
+            largest_county = county
+            largest_county_percentage = vote_percentage
 
 
     # 7: Print the county with the largest turnout to the terminal.
+    largest_county_summary = (
+        f"-------------------------\n"
+        f"Largest County: {largest_county}\n"
+        f"Largest County Vote Count: {largest_county_count:,}\n"
+        f"Largest County Percentage: {largest_county_percentage:.1f}%\n"
+        f"-------------------------\n")
+    print(largest_county_summary)
 
 
     # 8: Save the county with the largest turnout to a text file.
-
+    txt_file.write(largest_county_summary)
 
     # Save the final candidate vote count to the text file.
     for candidate_name in candidate_votes:
